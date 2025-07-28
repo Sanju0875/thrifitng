@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signup</title>
+    <style>
+        body { font-family: Arial; background-color: #f0f0f0; }
+        .form-box {
+            width: 350px; margin: 50px auto;
+            background: white; padding: 30px;
+            border-radius: 8px; box-shadow: 0 0 10px gray;
+        }
+        input, button {
+            width: 100%; padding: 10px; margin-top: 10px;
+        }
+        button {
+            background-color: #0275d8; color: white; border: none;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="form-box">
+    <h2>Signup</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required>
+
+        <label for="id_email">Email</label>
+        <input type="email" name="email" id="id_email" required>
+
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required>
+
+        <label for="id_confirm_password">Confirm Password</label>
+        <input type="password" name="confirm_password" id="id_confirm_password" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+</body>
+</html>
