@@ -77,6 +77,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'USER': 'Proudct',
     }
 }
 
@@ -124,4 +125,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = '/login/'
+
+LOGIN_URL = '/checkout/'          # where unauthenticated users are sent
+LOGIN_REDIRECT_URL = '/order_summary/'  # where to go after successful login
 

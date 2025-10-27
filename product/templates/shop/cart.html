@@ -1,0 +1,222 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f0f0f0;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        td img {
+            border-radius: 8px;
+            max-width: 60px;
+            height: auto;
+        }
+
+        .btn {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 5px;
+        }
+
+        .btn-outline-secondary {
+            border: 1px solid #6c757d;
+            color: #6c757d;
+            background-color: #fff;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-outline-danger {
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            background-color: #fff;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mt-2 {
+            margin-top: 8px;
+        }
+
+        .mt-3 {
+            margin-top: 1rem;
+        }
+
+        h4 {
+            margin-top: 30px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            tr {
+                margin-bottom: 1rem;
+            }
+
+            td {
+                text-align: left;
+            }
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .actions .btn {
+            background-color: #d32f2f;
+            /* Red background */
+            color: #fff;
+            /* White text */
+            border: none;
+            padding: 12px 24px;
+            /* Button size */
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .actions .btn:hover {
+            background-color: #b71c1c;
+            /* Darker red on hover */
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2>Your Cart</h2>
+        {% if cart_items %}
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.product.title }}</td>
+                    <td>
+                        {% if item.product.image %}
+                        {% if item.product.image.url %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" width="60">
+                        {% else %}
+                        <img src="{{ item.product.image }}" alt="{{ item.product.title }}" width="60">
+                        {% endif %}
+                        {% else %}
+                        <span>No Image</span>
+                        {% endif %}
+                    </td>
+                    <td>Rs {{ item.product.price }}</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <form method="post" action="{% url 'decrease_quantity' item.product.pk %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-secondary">−</button>
+                            </form>
+                            <span>{{ item.quantity }}</span>
+                            <form method="post" action="{% url 'increase_quantity' item.product.pk %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-secondary">+</button>
+                            </form>
+                        </div>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.pk %}" class="mt-2">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                    <td>Rs {{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4>Total Price: Rs {{ total_price }}</h4>
+        <div class="actions">
+            <a href="{% url 'index' %}" class="btn btn-warning">Continue Shopping</a>
+            <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+        </div>
+        {% else %}
+        <p>Your cart is empty.</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
+{% endblock %}

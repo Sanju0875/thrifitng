@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- search.html -->
+<form method="get">
+  <input type="text" name="q" placeholder="Search by title..." value="{{ query }}">
+  <button type="submit">Search</button>
+</form>
+
+<ul>
+  {% for product in products %}
+    <li>
+      <strong>{{ product.title }}</strong> - Rs. {{ product.price }}<br>
+      <small>{{ product.description }}</small>
+    </li>
+  {% empty %}
+    <li>No matching products found.</li>
+  {% endfor %}
+</ul>
+
+
+</body>
+</html>
