@@ -287,38 +287,29 @@
         <div class="input-group mb-4">
           <input type="text" class="form-control" name="q" placeholder="Search by category..." value="{{ query }}">
           <button class="btn btn-primary" type="submit">Search</button>
-          <a href="{% url 'cart' %}" class="btn btn-outline-secondary ms-2">🛒</a>
-          <a href="{% url 'cart' %}" class="btn btn-outline-secondary position-relative ms-2">
-            <i class="bi bi-cart3"></i>
-            {% if total_quantity %}
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {{ total_quantity }}
-            </span>
-            {% endif %}
-          </a>
-
         </div>
       </form>
     </div>
 
     <div class="row">
-      {% for product in products %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          <a href="{% url 'product_detail' product.id %}">
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
-          </a>
+      <div>
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <a href="{% url 'product_detail' product.id %}">
+              <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.title }}">
+            </a>
 
-          <div class="card-body">
-            <h5 class="card-title">{{ product.title }}</h5>
-            <p class="card-text">{{ product.description|truncatewords:15 }}</p>
-            <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
-            <p class="card-text text-success">Rs. {{ product.price }}</p>
+            <div class="card-body">
+              <h5 class="card-title">{{ product.title }}</h5>
+              <p class="card-text">{{ product.description|truncatewords:15 }}</p>
+              <p class="card-text"><strong>Category:</strong> {{ product.category }}</p>
+              <p class="card-text text-success">Rs. {{ product.price }}</p>
+            </div>
           </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-
     </div>
     </div>
 

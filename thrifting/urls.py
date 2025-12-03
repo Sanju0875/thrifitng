@@ -20,12 +20,14 @@ from product import views
 
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LoginView
 
 
 
 urlpatterns = [
     path('',include('product.urls')),
     path('admin/', admin.site.urls),
+     path('login/', LoginView.as_view(template_name='checkout.html'), name='login'),
     
 ]
 

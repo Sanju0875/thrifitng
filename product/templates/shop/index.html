@@ -135,7 +135,6 @@
             background-color: #d35400;
             border-color: #d35400;
         }
-        
     </style>
 </head>
 
@@ -183,25 +182,46 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            {% for Product in products_object %}
-            <div class="col-md-3">
-                <div class="card">
-                    <a href="{% url 'product_detail' Product.id %}">
-                        <img src="{{ Product.image }}" class="card-img-top" alt="{{ Product.title }}">
-                    </a>
-                    <div class="card-body">
-                        <div class="card-title">
-                            {{ Product.title }}
+        <div class="container">
+            <div class="row">
+                <!-- Main Products Column -->
+                <div class="col-lg-9 col-md-12">
+                    <div class="row">
+                        {% for Product in products_object %}
+                        <div class="col-6 col-sm-4 col-md-3 mb-4">
+                            <div class="card h-100">
+                                <a href="{% url 'product_detail' Product.id %}">
+                                    <img src="{{ Product.image.url }}" class="card-img-top" alt="{{ Product.title }}">
+                                </a>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title">{{ Product.title }}</h6>
+                                    <p class="card-text text-success mb-2">Rs {{ Product.price }}</p>
+                                    <a href="{% url 'product_detail' Product.id %}"
+                                        class="btn btn-primary btn-sm mt-auto">View Details</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-text">
-                            Rs {{Product.price}}
-                        </div>
-                        <a href="{% url 'product_detail' Product.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        {% endfor %}
                     </div>
                 </div>
+
+                <!-- Recommendations Column -->
+                <div class="col-lg-3 col-md-12 mt-4 mt-lg-0" id="recommendations">
+                    <h4 class="mb-3">Recommended for You</h4>
+                    {% for rec in recommended_products %}
+                    <div class="card mb-3">
+                        <a href="{% url 'product_detail' rec.id %}">
+                            <img src="{{ rec.image.url }}" class="card-img-top" alt="{{ rec.title }}">
+                        </a>
+                        <div class="card-body">
+                            <h6 class="card-title">{{ rec.title }}</h6>
+                            <p class="card-text text-success">Rs. {{ rec.price }}</p>
+                            <a href="{% url 'product_detail' rec.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
         </div>
     </div>
     <footer>
