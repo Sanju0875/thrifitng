@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Thrift Store - Payment{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm">
+        <h5 class="mb-4">Payment</h5>
+        <p>Order #{{ order.id }}</p>
+        <p>Total Amount: <strong>${{ order.total_price }}</strong></p>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success w-100">Pay Now</button>
+        </form>
+        <a href="{% url 'checkout' %}" class="btn btn-outline-secondary w-100 mt-2">Back to Checkout</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

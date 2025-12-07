@@ -1,154 +1,91 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <style>
-    /* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+{% extends 'shop/base.html' %}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+{% block title %}
+  Thrift Store - Checkout
+{% endblock %}
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+{% block content %}
+  <div class="container my-5">
+    <form method="post">
+      {% csrf_token %}
 
-.login-container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
-}
+      <div class="row g-4">
+        <!-- Billing Form -->
+        <div class="col-md-7">
+          <div class="card p-4 shadow-sm">
+            <h5 class="mb-4">Billing Address</h5>
 
-.login-box {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 40px 30px;
-  text-align: center;
-}
+            {{ form.non_field_errors }}
 
-.login-box h2 {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 10px;
-}
+            <div class="row mb-3">
+              <div class="col">{{ form.first_name.label_tag }} {{ form.first_name }}</div>
+              <div class="col">{{ form.last_name.label_tag }} {{ form.last_name }}</div>
+            </div>
 
-.subtitle {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 25px;
-}
+            <div class="row mb-3">
+              <div class="col">{{ form.email.label_tag }} {{ form.email }}</div>
+              <div class="col">{{ form.phone.label_tag }} {{ form.phone }}</div>
+            </div>
 
-.input-group {
-  text-align: left;
-  margin-bottom: 20px;
-}
+            <div class="row mb-3">
+              <div class="col">{{ form.address1.label_tag }} {{ form.address1 }}</div>
+              <div class="col">{{ form.address2.label_tag }} {{ form.address2 }}</div>
+            </div>
 
-.input-group label {
-  font-size: 14px;
-  color: #555;
-  display: block;
-  margin-bottom: 6px;
-}
+            <div class="row mb-3">
+              <div class="col">{{ form.city.label_tag }} {{ form.city }}</div>
+              <div class="col">{{ form.state.label_tag }} {{ form.state }}</div>
+              <div class="col">{{ form.country.label_tag }} {{ form.country }}</div>
+            </div>
 
-.input-group input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  transition: 0.3s ease;
-}
-
-.input-group input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.btn {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s ease;
-}
-
-.btn:hover {
-  background: #0056b3;
-}
-
-.bottom-text {
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.bottom-text a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.bottom-text a:hover {
-  text-decoration: underline;
-}
-
-.error {
-  color: #ff4d4d;
-  background: #ffeaea;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  font-size: 14px;
-}
-
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/login.css' %}">
-</head>
-<body>
-  <div class="login-container">
-    <div class="login-box">
-      <h2>Welcome Back</h2>
-      <p class="subtitle">Login to your account</p>
-
-      {% if error %}
-        <p class="error">{{ error }}</p>
-      {% endif %}
-
-      <form method="POST" action="{% url 'login' %}?next={% url 'order_summary' %}">
-        {% csrf_token %}
-        <div class="input-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <div class="mb-3">{{ form.note.label_tag }} {{ form.note }}</div>
+          </div>
         </div>
 
-        <div class="input-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <!-- Order Summary -->
+        <div class="col-md-5">
+          <div class="card p-4 shadow-sm">
+            <h5 class="mb-4">Order Summary</h5>
+
+            {% if cart_items %}
+              {% for item in cart_items %}
+                <div class="d-flex align-items-center mb-3">
+                  <img src="{% if item.product.image %}
+                      {{ item.product.image.url }}
+                    {% else %}
+                      https://via.placeholder.com/60x60
+                    {% endif %}"
+                    alt="{{ item.product.title }}"
+                    style="width: 60px; height: 60px; object-fit: cover;"
+                    class="me-3 rounded"
+                    onerror="this.src='https://via.placeholder.com/60x60'" />
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">{{ item.product.title }}</h6>
+                    <small>Qty: {{ item.quantity }}</small>
+                  </div>
+                  <div class="text-end">
+                    <strong>${{ item.subtotal }}</strong>
+                  </div>
+                </div>
+              {% endfor %}
+              <hr />
+              <div class="d-flex justify-content-between mb-3">
+                <strong>Total:</strong>
+                <strong>${{ total_price }}</strong>
+              </div>
+            {% else %}
+              <p class="text-center text-muted mb-3">No items in cart</p>
+              <div class="d-flex justify-content-between mb-3">
+                <strong>Total:</strong>
+                <strong>$0</strong>
+              </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary w-100 mt-2">Place Order</button>
+            <a href="{% url 'products' %}" class="btn btn-outline-secondary w-100 mt-2">Continue Shopping</a>
+          </div>
         </div>
-
-        <button type="submit" class="btn">Login</button>
-      </form>
-
-      <div class="bottom-text">
-        <p>Don’t have an account? <a href="{% url 'signup' %}">Register</a></p>
       </div>
-    </div>
+    </form>
   </div>
-</body>
-</html>
+{% endblock %}

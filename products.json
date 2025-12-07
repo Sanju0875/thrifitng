@@ -1,0 +1,182 @@
+[
+    {
+        "model": "product.product",
+        "pk": 1,
+        "fields": {
+            "title": "Floral Summer Dress",
+            "price": 29.99,
+            "discount_price": 24.99,
+            "category": "Women's Wear",
+            "description": "Lightweight floral dress perfect for summer outings.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 2,
+        "fields": {
+            "title": "Casual T-Shirt",
+            "price": 15.99,
+            "discount_price": 12.99,
+            "category": "Women's Wear",
+            "description": "Comfortable cotton T-shirt, available in multiple colors.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 3,
+        "fields": {
+            "title": "Skinny Jeans",
+            "price": 39.99,
+            "discount_price": 34.99,
+            "category": "Women's Wear",
+            "description": "Stretchable skinny jeans, perfect fit for everyday wear.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 4,
+        "fields": {
+            "title": "Chiffon Blouse",
+            "price": 25.99,
+            "discount_price": 20.99,
+            "category": "Women's Wear",
+            "description": "Elegant chiffon blouse for office or casual wear.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 5,
+        "fields": {
+            "title": "Maxi Skirt",
+            "price": 28.99,
+            "discount_price": 22.99,
+            "category": "Women's Wear",
+            "description": "Flowy maxi skirt with a comfortable waistband.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 6,
+        "fields": {
+            "title": "Denim Jacket",
+            "price": 49.99,
+            "discount_price": 44.99,
+            "category": "Women's Wear",
+            "description": "Classic denim jacket with button closure.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 7,
+        "fields": {
+            "title": "Sleeveless Top",
+            "price": 19.99,
+            "discount_price": 15.99,
+            "category": "Women's Wear",
+            "description": "Breathable sleeveless top for hot weather.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 8,
+        "fields": {
+            "title": "Pleated Pants",
+            "price": 35.99,
+            "discount_price": 30.99,
+            "category": "Women's Wear",
+            "description": "High-waist pleated pants, stylish and comfortable.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 9,
+        "fields": {
+            "title": "Cardigan Sweater",
+            "price": 32.99,
+            "discount_price": 28.99,
+            "category": "Women's Wear",
+            "description": "Soft cardigan for layering in cooler weather.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 10,
+        "fields": {
+            "title": "Wrap Dress",
+            "price": 42.99,
+            "discount_price": 37.99,
+            "category": "Women's Wear",
+            "description": "Versatile wrap dress that fits multiple sizes.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 11,
+        "fields": {
+            "title": "Linen Shorts",
+            "price": 22.99,
+            "discount_price": 18.99,
+            "category": "Women's Wear",
+            "description": "Light linen shorts, perfect for summer.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 12,
+        "fields": {
+            "title": "Off-Shoulder Top",
+            "price": 27.99,
+            "discount_price": 23.99,
+            "category": "Women's Wear",
+            "description": "Trendy off-shoulder top for casual outings.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 13,
+        "fields": {
+            "title": "Bodycon Dress",
+            "price": 39.99,
+            "discount_price": 34.99,
+            "category": "Women's Wear",
+            "description": "Fitted bodycon dress, ideal for parties.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 14,
+        "fields": {
+            "title": "Hooded Sweatshirt",
+            "price": 29.99,
+            "discount_price": 25.99,
+            "category": "Women's Wear",
+            "description": "Casual hooded sweatshirt for daily wear.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    },
+    {
+        "model": "product.product",
+        "pk": 15,
+        "fields": {
+            "title": "Pleated Mini Skirt",
+            "price": 24.99,
+            "discount_price": 20.99,
+            "category": "Women's Wear",
+            "description": "Cute mini skirt with pleats, perfect for summer.",
+            "image": "https://via.placeholder.com/150x200"
+        }
+    }
+]

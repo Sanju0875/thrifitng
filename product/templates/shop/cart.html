@@ -1,25 +1,6 @@
+{% extends "shop/base.html" %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7f7f7;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
         h2 {
             font-size: 28px;
             font-weight: bold;
@@ -152,15 +133,11 @@
             /* Slight zoom effect */
         }
     </style>
-
-</head>
-
-<body>
     <div class="container mt-4">
         <h2>Your Cart</h2>
         {% if cart_items %}
-        <table class="table table-bordered mt-3">
-            <thead>
+            <table class="table table-bordered mt-3">
+                <thead>
                 <tr>
                     <th>Product</th>
                     <th>Image</th>
@@ -168,55 +145,52 @@
                     <th>Quantity</th>
                     <th>Subtotal</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.product.title }}</td>
-                    <td>
-                        {% if item.product.image %}
-                        {% if item.product.image.url %}
-                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" width="60">
-                        {% else %}
-                        <img src="{{ item.product.image }}" alt="{{ item.product.title }}" width="60">
-                        {% endif %}
-                        {% else %}
-                        <span>No Image</span>
-                        {% endif %}
-                    </td>
-                    <td>Rs {{ item.product.price }}</td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <form method="post" action="{% url 'decrease_quantity' item.product.pk %}">
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>
+                            {% if item.product.image %}
+                                {% if item.product.image.url %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" width="60">
+                                {% else %}
+                                    <img src="{{ item.product.image }}" alt="{{ item.product.title }}" width="60">
+                                {% endif %}
+                            {% else %}
+                                <span>No Image</span>
+                            {% endif %}
+                        </td>
+                        <td>Rs {{ item.product.price }}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <form method="post" action="{% url 'decrease_quantity' item.product.pk %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-secondary">−</button>
+                                </form>
+                                <span>{{ item.quantity }}</span>
+                                <form method="post" action="{% url 'increase_quantity' item.product.pk %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-secondary">+</button>
+                                </form>
+                            </div>
+                            <form method="post" action="{% url 'remove_from_cart' item.product.pk %}" class="mt-2">
                                 {% csrf_token %}
-                                <button class="btn btn-sm btn-outline-secondary">−</button>
+                                <button class="btn btn-sm btn-outline-danger">Remove</button>
                             </form>
-                            <span>{{ item.quantity }}</span>
-                            <form method="post" action="{% url 'increase_quantity' item.product.pk %}">
-                                {% csrf_token %}
-                                <button class="btn btn-sm btn-outline-secondary">+</button>
-                            </form>
-                        </div>
-                        <form method="post" action="{% url 'remove_from_cart' item.product.pk %}" class="mt-2">
-                            {% csrf_token %}
-                            <button class="btn btn-sm btn-outline-danger">Remove</button>
-                        </form>
-                    </td>
-                    <td>Rs {{ item.subtotal }}</td>
-                </tr>
+                        </td>
+                        <td>Rs {{ item.subtotal }}</td>
+                    </tr>
                 {% endfor %}
-            </tbody>
-        </table>
-        <h4>Total Price: Rs {{ total_price }}</h4>
-        <div class="actions">
-            <a href="{% url 'index' %}" class="btn btn-warning">Continue Shopping</a>
-            <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
-        </div>
+                </tbody>
+            </table>
+            <h4>Total Price: Rs {{ total_price }}</h4>
+            <div class="actions">
+                <a href="{% url 'products' %}" class="btn btn-warning">Continue Shopping</a>
+                <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+            </div>
         {% else %}
-        <p>Your cart is empty.</p>
+            <p>Your cart is empty.</p>
         {% endif %}
     </div>
-</body>
-
-</html>
 {% endblock %}

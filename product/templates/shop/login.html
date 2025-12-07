@@ -1,0 +1,26 @@
+{% extends "shop/base.html" %}
+
+{%block title %}Thrift Store - Login{%endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4" style="width: 380px;">
+        <h3 class="text-center mb-4">Login</h3>
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            {{ form.as_div }}
+
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Forgot Password?</a><br>
+                <span>Don't have an account?
+                    <a href="{% url 'signup' %}" class="text-decoration-none">Signup Now!</a>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row mb-3">
+        <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'products' %}" class="d-flex w-75">
+                <input type="text" name="q" class="form-control me-2" placeholder="Search products..." value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Products Column -->
+        <div class="col-lg-9 col-md-12">
+            <div class="row">
+                {% for product in products_object %}
+                    <div class="col-6 col-sm-4 col-md-3 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <a href="{% url 'product_detail' product.id %}">
+                                <img src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/150{% endif %}" class="card-img-top" alt="{{ product.title }}" style="height:200px; object-fit:cover;">
+                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">{{ product.title }}</h6>
+                                <p class="card-text text-success mb-2">Rs {{ product.price }}</p>
+                                <div class="mt-auto">
+                                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm w-100 mb-1">View Details</a>
+                                    {% if request.user.is_authenticated %}
+                                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success btn-sm w-100">Add to Cart</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center text-muted">No products found.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <!-- Recommendations Column -->
+        <div class="col-lg-3 col-md-12 mt-4 mt-lg-0">
+            <h4 class="mb-3">Recommended for You</h4>
+            {% if recommended_products %}
+                {% for rec in recommended_products %}
+                    <div class="card mb-3 shadow-sm">
+                        <a href="{% url 'product_detail' rec.id %}">
+                            <img src="{% if rec.image %}{{ rec.image.url }}{% else %}https://via.placeholder.com/150{% endif %}" class="card-img-top" alt="{{ rec.title }}" style="height:150px; object-fit:cover;">
+                        </a>
+                        <div class="card-body">
+                            <h6 class="card-title">{{ rec.title }}</h6>
+                            <p class="card-text text-success mb-2">Rs {{ rec.price }}</p>
+                            <a href="{% url 'product_detail' rec.id %}" class="btn btn-primary btn-sm w-100 mb-1">View Details</a>
+                            <a href="{% url 'add_to_cart' rec.id %}" class="btn btn-success btn-sm w-100">Add to Cart</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No recommendations available.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

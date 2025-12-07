@@ -1,88 +1,54 @@
 import pandas as pd
 import os
 from django.conf import settings
-from .models import Products
+from .models import Product, OrderItem
 
-item_similarity = pd.read_pickle(os.path.join(settings.BASE_DIR / "models", "item_similarity.pkl"))
+# Load precomputed similarity matrix
+item_similarity = pd.read_pickle(os.path.join(settings.BASE_DIR, "models", "item_similarity.pkl"))
 
-# def get_recommendations(last_viewed_titles, top_n=5):
-#     recommended_titles = []
-
-#     # Get all product titles currently in DB
-#     db_titles = set(Products.objects.values_list('title', flat=True))
+def get_recommendations_from_transactions(order_items, top_n=5):
+    """
+    Simple category-based recommendation using products from successful transactions.
+    order_items: queryset of OrderItem
+    """
+    recommended_products = Product.objects.none()
     
-#     # Loop through all products the user viewed
-#     for title in last_viewed_titles:
-#         if title in item_similarity.index:
-#             similar_scores = item_similarity.loc[title]
-#             # Sort by similarity, exclude itself
-#             similar_titles = similar_scores.sort_values(ascending=False).index.tolist()
-#             similar_titles.remove(title)
+    products_in_orders = [item.product for item in order_items if item.product is not None]
+    
+    for product in products_in_orders:
+        qs = Product.objects.filter(category=product.category).exclude(id=product.id)
+        recommended_products = recommended_products | qs
 
-#             # Only keep titles that exist in your DB
-#             similar_titles = [t for t in similar_titles if t in db_titles]
-
-#             recommended_titles.extend(similar_titles[:top_n])
-
-#     # Remove duplicates and limit to top N overall
-#     recommended_titles = list(dict.fromkeys(recommended_titles))[:top_n]
-
-#     # Fetch actual Products from DB
-#     recommended_products = Products.objects.filter(title__in=recommended_titles)
-
-#     return recommended_products
-
-def get_recommendations(last_viewed_titles, top_n=5):
-    """
-    Recommend products from the same category as the last viewed products.
-    last_viewed_products: queryset of Products
-    """
-    recommended_products = Products.objects.none()  # empty queryset
-
-    for product in last_viewed_titles:
-        # Fetch top_n products from the same category excluding the product itself
-        qs = Products.objects.filter(category=product.category).exclude(id=product.id)[:top_n]
-        recommended_products = recommended_products | qs  # union querysets
-
-    # Remove duplicates and limit total results
     recommended_products = recommended_products.distinct()[:top_n]
-
     return recommended_products
 
 
-def get_recommendations_ml(last_viewed_products, top_n=5):
+def get_recommendations_ml_from_transactions(order_items, top_n=5):
     """
-    last_viewed_products: queryset of Products
+    ML-based recommendation using precomputed item similarity.
+    order_items: queryset of OrderItem
     top_n: number of recommended products
     """
-    # Fetch titles of products in DB
-    db_titles = set(Products.objects.values_list('title', flat=True))
-
     recommended_scores = {}
+    db_titles = set(Product.objects.values_list('title', flat=True))
+    
+    # Extract product titles from order items
+    purchased_titles = [item.product.title for item in order_items if item.product is not None]
 
-    for product in last_viewed_products:
-        title = product.product.title
+    for title in purchased_titles:
         if title in item_similarity.index:
-            # Get similarity scores for this product
+            # similarity scores for this product
             sim_scores = item_similarity.loc[title]
-
-            # Keep only products that exist in DB and exclude itself
+            # Only keep products in DB, exclude the product itself
             sim_scores = sim_scores[sim_scores.index.isin(db_titles)]
-            if title in sim_scores.index:
-                sim_scores = sim_scores.drop(title)
-
-            # Accumulate similarity scores
+            sim_scores = sim_scores.drop(title, errors='ignore')
+            
             for t, score in sim_scores.items():
-                if t in recommended_scores:
-                    recommended_scores[t] += score
-                else:
-                    recommended_scores[t] = score
+                recommended_scores[t] = recommended_scores.get(t, 0) + score
 
-    # Sort by total similarity score descending
+    # Sort by accumulated score
     sorted_titles = sorted(recommended_scores.items(), key=lambda x: x[1], reverse=True)
-    sorted_titles = [t for t, s in sorted_titles][:top_n]
+    top_titles = [t for t, _ in sorted_titles][:top_n]
 
-    # Fetch corresponding Products objects
-    recommended_products = Products.objects.filter(title__in=sorted_titles)
-
+    recommended_products = Product.objects.filter(title__in=top_titles)
     return recommended_products

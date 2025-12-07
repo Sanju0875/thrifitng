@@ -49,7 +49,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-
 ]
 
 ROOT_URLCONF = 'thrifting.urls'
@@ -118,8 +117,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
-
-LOGIN_URL = '/checkout/'          
-LOGIN_REDIRECT_URL = 'order_summary'
-
-
